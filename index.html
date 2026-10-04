@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APCS - Attendance Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">✓</div>
+                <div>
+                    <h2>APCS</h2>
+                    <span>Attendance System</span>
+                </div>
+            </div>
+
+            <nav>
+                <button class="nav-btn active" data-section="dashboard">
+                    <span>📊</span> Dashboard
+                </button>
+
+                <button class="nav-btn" data-section="students">
+                    <span>👨‍🎓</span> Students
+                </button>
+
+                <button class="nav-btn" data-section="attendance">
+                    <span>✓</span> Attendance
+                </button>
+
+                <button class="nav-btn" data-section="reports">
+                    <span>📈</span> Reports
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="today-box">
+                    <small>Today's Date</small>
+                    <strong id="sidebarDate"></strong>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main">
+
+            <header class="topbar">
+                <div>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Manage your classes and attendance</p>
+                </div>
+
+                <button class="mobile-menu" id="mobileMenu">☰</button>
+            </header>
+
+            <!-- DASHBOARD -->
+            <section class="page active" id="dashboard">
+
+                <div class="welcome">
+                    <div>
+                        <h2>APCS👋</h2>
+                        <p>Manage student attendance easily from class</p>
+                    </div>
+                    <div class="welcome-date" id="dashboardDate"></div>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon blue">👨‍🎓</div>
+                        <div>
+                            <span>Total Students</span>
+                            <h2 id="totalStudents">0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">✓</div>
+                        <div>
+                            <span>Present Today</span>
+                            <h2 id="presentToday">0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">✕</div>
+                        <div>
+                            <span>Absent Today</span>
+                            <h2 id="absentToday">0</h2>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">%</div>
+                        <div>
+                            <span>Attendance</span>
+                            <h2 id="overallAttendance">0%</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="content-grid">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Classes</h3>
+                                <p>Select a class to manage attendance</p>
+                            </div>
+                            <button class="primary-btn" id="addClassBtn">+ Add Class</button>
+                        </div>
+
+                        <div id="classList" class="class-list"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Quick Actions</h3>
+                                <p>Common tasks</p>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <button class="quick-btn" data-go="students">
+                                <span>👨‍🎓</span>
+                                <div>
+                                    <strong>Add Student</strong>
+                                    <small>Add a new student</small>
+                                </div>
+                            </button>
+
+                            <button class="quick-btn" data-go="attendance">
+                                <span>✓</span>
+                                <div>
+                                    <strong>Mark Attendance</strong>
+                                    <small>Take today's attendance</small>
+                                </div>
+                            </button>
+
+                            <button class="quick-btn" data-go="reports">
+                                <span>📈</span>
+                                <div>
+                                    <strong>View Reports</strong>
+                                    <small>Check attendance records</small>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- STUDENTS -->
+            <section class="page" id="students">
+
+                <div class="section-toolbar">
+
+                    <div class="filters">
+                        <select id="studentClassFilter">
+                            <option value="">All Classes</option>
+                        </select>
+
+                        <input type="text" id="studentSearch" placeholder="Search student...">
+                    </div>
+
+                    <button class="primary-btn" id="addStudentBtn">
+                        + Add Student
+                    </button>
+
+                </div>
+
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Roll No.</th>
+                                    <th>Student Name</th>
+                                    <th>Class</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Attendance</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="studentsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ATTENDANCE -->
+            <section class="page" id="attendance">
+
+                <div class="attendance-controls">
+
+                    <div class="control-group">
+                        <label>Select Class</label>
+                        <select id="attendanceClass"></select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Select Date</label>
+                        <input type="date" id="attendanceDate">
+                    </div>
+
+                </div>
+
+                <div class="attendance-actions">
+
+                    <button class="secondary-btn" id="markAllPresent">
+                        ✓ Mark All Present
+                    </button>
+
+                    <button class="secondary-btn" id="markAllAbsent">
+                        ✕ Mark All Absent
+                    </button>
+
+                    <button class="primary-btn" id="saveAttendance">
+                        💾 Save Attendance
+                    </button>
+
+                </div>
+
+                <div class="attendance-summary">
+                    <div>
+                        <span>Total</span>
+                        <strong id="attendanceTotal">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Present</span>
+                        <strong class="green-text" id="attendancePresent">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Absent</span>
+                        <strong class="red-text" id="attendanceAbsent">0</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Student Attendance</h3>
+                            <p>Mark students as present or absent</p>
+                        </div>
+                    </div>
+
+                    <div id="attendanceList"></div>
+                </div>
+
+            </section>
+
+            <!-- REPORTS -->
+            <section class="page" id="reports">
+
+                <div class="section-toolbar">
+
+                    <div class="filters">
+                        <select id="reportClass"></select>
+
+                        <input type="text" id="reportSearch" placeholder="Search student...">
+                    </div>
+
+                </div>
+
+                <div class="report-cards">
+
+                    <div class="report-card">
+                        <span>Total Students</span>
+                        <strong id="reportTotal">0</strong>
+                    </div>
+
+                    <div class="report-card">
+                        <span>Total Present</span>
+                        <strong class="green-text" id="reportPresent">0</strong>
+                    </div>
+
+                    <div class="report-card">
+                        <span>Total Absent</span>
+                        <strong class="red-text" id="reportAbsent">0</strong>
+                    </div>
+
+                    <div class="report-card">
+                        <span>Average Attendance</span>
+                        <strong id="reportPercentage">0%</strong>
+                    </div>
+
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Attendance Report</h3>
+                            <p>Student-wise attendance summary</p>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Roll No.</th>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Total Days</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="reportTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- STUDENT MODAL -->
+    <div class="modal" id="studentModal">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+                <div>
+                    <h2>Add Student</h2>
+                    <p>Save student information</p>
+                </div>
+
+                <button class="close-btn" data-close="studentModal">×</button>
+            </div>
+
+            <form id="studentForm">
+
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="studentName" required placeholder="Enter student name">
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label>Roll Number</label>
+                        <input type="text" id="studentRoll" required placeholder="Enter roll number">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Class</label>
+                        <select id="studentClass" required></select>
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" data-close="studentModal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="primary-btn">
+                        Save Student
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- CLASS MODAL -->
+    <div class="modal" id="classModal">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+                <div>
+                    <h2>Add Class</h2>
+                    <p>Create a new course or section</p>
+                </div>
+
+                <button class="close-btn" data-close="classModal">×</button>
+            </div>
+
+            <form id="classForm">
+
+                <div class="form-group">
+                    <label>Course / Class Name</label>
+                    <input type="text" id="className" required placeholder="Example: BCA">
+                </div>
+
+                <div class="form-group">
+                    <label>Section / Batch</label>
+                    <input type="text" id="classSection" required placeholder="Example: 1st Year A">
+                </div>
+
+                <div class="modal-actions">
+
+                    <button type="button" class="secondary-btn" data-close="classModal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="primary-btn">
+                        Add Class
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- STUDENT DETAIL MODAL -->
+    <div class="modal" id="detailModal">
+
+        <div class="modal-box large">
+
+            <div class="modal-header">
+                <div>
+                    <h2 id="detailName">Student Details</h2>
+                    <p id="detailClass"></p>
+                </div>
+
+                <button class="close-btn" data-close="detailModal">×</button>
+            </div>
+
+            <div id="studentDetail"></div>
+
+        </div>
+
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
